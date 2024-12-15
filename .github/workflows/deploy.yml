@@ -26,10 +26,10 @@ jobs:
 
       # Étape 4 : Construire l'image Docker
       - name: Build Docker image
-        run: docker build -t buinsa.azurecr.io/librairy:latest .
+        run: docker build -t registrylist.azurecr.io/registrylist:latest .
 
       # Étape 5 : Pousser l'image Docker vers le registre
       - name: Push Docker image
-        run: docker push buinsa.azurecr.io/librairy:latest
+        run: docker push registrylist.azurecr.io/registrylist:latest
 
       
