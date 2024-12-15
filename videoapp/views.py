@@ -2,9 +2,6 @@ from django.shortcuts import render, redirect
 
 # Create your views here.
 
-<<<<<<< HEAD
-
-=======
 from .api import *
 from django.shortcuts import render
 from gtts import gTTS
@@ -17,7 +14,6 @@ from PIL import Image
 import shutil
 from .api import *
 from django.http import  JsonResponse
->>>>>>> 9e314d3 (change2s)
 import time
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
@@ -33,6 +29,7 @@ from django.conf import settings
 from django.contrib import messages
 from django.core.files.storage import FileSystemStorage
 from django.http import JsonResponse
+from .models import VerificationCode
 
 def upload_file(request):
     if request.method == 'POST' and request.FILES['file']:
@@ -72,14 +69,6 @@ def generate_agora_token(request):
 def index(request):
     return render(request, "index.html")
 
-<<<<<<< HEAD
-def chat_ai(request):
-    return render(request, "chat.html")
-
-def chat_view(request):
-    return render(request, "chat.html")
-
-=======
 def chat_view(request):
     return render(request, "chat.html")
 
@@ -101,7 +90,6 @@ def chat_ai(request):
 
 
 
->>>>>>> 9e314d3 (change2s)
 def forgotpassword(request):
     return render(request, "index.html")
 
@@ -124,6 +112,7 @@ def register(request):
             mess += " Password not match"
         if User.objects.filter(Q(email= email)| Q(username=username)).first():
             mess += f" Exist user with email {email}"
+        print("Message: ", mess)
         if mess=="":
             try:
                     validate_password(pass1)
@@ -161,13 +150,25 @@ def register(request):
                              [user.email])
 
                     email.send()
-                    mess = f"Welcome {user.username}, Your account is create successfully"    
+                    mess = f"Welcome {user.username}, Your account is create successfully, to active your account, get you verification code in your email boss at {user.email}"
+                        
                     messages.info(request, mess)
-                    return redirect("login")
+
+                    verification_code, created = VerificationCode.objects.get_or_create(user=user)
+                    verification_code.generate_code()
+                    print(verification_code.code)
+                    
+                    code = EmailMessage('Votre code de vérification',
+                             f'Votre code de vérification est : {verification_code.code}',
+                             f"Youtube VideoTrans <{settings.EMAIL_HOST}>",
+                             [user.email])
+
+                    code.send()
+                    return redirect("code")
             except Exception as e:
                     print("error: ", e)
-                    err = " ".join(e)
-                    messages.error(request, err)
+                    #err = " ".join(e)
+                    messages.error(request, e)
                     return render(request, template_name="register.html")
             
         #messages.info(request, "Bonjour")
@@ -212,6 +213,31 @@ def connection(request):
 
 
 
+def code(request):
+    mess = ""
+
+   
+    if request.method == "POST":
+        
+        print("="*5, "NEW CONECTION", "="*5)
+        email = request.POST.get("email")
+        code_v = request.POST.get("code")
+        user = User.objects.filter(email= email).first()
+        verification_code, created = VerificationCode.objects.get_or_create(user=user)
+        
+        print(verification_code.code)
+        if str(code_v) == str(verification_code.code) :
+            messages.info(request, "Code valide")
+            return redirect("login")
+        else:
+            mess = "Invalid code !!!"
+      
+        messages.info(request, mess)
+
+    return render(request, template_name="code.html")
+
+
+
 def deconnexion(request):
          print("Deconnexion")
          logout(request)
@@ -219,8 +245,6 @@ def deconnexion(request):
     
 
 
-<<<<<<< HEAD
-=======
 
 
 '''from openai import AzureOpenAI
@@ -266,4 +290,3 @@ completion = deployment_client.chat.completions.create(
     ],
 )
 print(completion.to_json())'''
->>>>>>> 9e314d3 (change2s)

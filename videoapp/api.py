@@ -32,7 +32,7 @@ load_dotenv()
 
 def chat(text):
     open_client = AzureOpenAI(
-    api_key='',
+    api_key='6xv3rz6Asc5Qq86B8vqjhKQzSTUZPmCcSuDm5CLEV5dj9m8gTHlNJQQJ99AKACYeBjFXJ3w3AAABACOGyHXT',
     
     api_version="2023-12-01-preview",
     azure_endpoint="https://chatlearning.openai.azure.com/openai/deployments/gpt-35-turbo/chat/completions?api-version=2024-08-01-preview"

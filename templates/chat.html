@@ -1,8 +1,5 @@
 <!doctype html>
-<<<<<<< HEAD
-=======
 {% load static %}
->>>>>>> 9e314d3 (change2s)
 <html lang="en">
   <head>
     <meta charset="utf-8">
@@ -11,28 +8,8 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/microsoft-cognitiveservices-speech-sdk@latest/distrib/browser/microsoft.cognitiveservices.speech.sdk.bundle-min.js"></script>
-<<<<<<< HEAD
-   
-    <style>
-        @import url("https://fonts.googleapis.com/css2?family=Redressed&family=Merriweather:wght@300;400;700&display=swap");
-        @import url("https://font.googleapis.com/css?family=Poppins:200, 300,400,500,600,7ù00,800,900&display=swap");
-        .redressed{
-        font-family:"Redressed", serif;
-
-        }
-
-        .merriweather{
-        font-family:"Merriweather", serif; 
-        }
-        
-        .main-content {
-      margin-left: 14em; /* Ajustez cette valeur pour correspondre à la largeur de votre barre latérale */
-    }
-    </style>
-=======
     <link rel="stylesheet" href="{% static 'videoapp/css/chat.css' %}">
     
->>>>>>> 9e314d3 (change2s)
 </head>
 
   <body style="background: linear-gradient(rgba(0,0,0, 0.5), rgba(0,0,0, 0.5)); ">
@@ -85,13 +62,8 @@
                           Small button
                         </button>
                         <ul class="dropdown-menu">
-<<<<<<< HEAD
-                          <li>Option1</li>
-                          <li>Option2</li>
-=======
                           <li>Learn French</li>
                           <li>English</li>
->>>>>>> 9e314d3 (change2s)
                         </ul>
                       </div>
                       
@@ -115,7 +87,7 @@
                 
                 <form class="d-flex " role="search " method="post">
                   {%csrf_token%}
-                    <input id="chat" class="text-light form-control bg-transparent" autocomplete="off" type="search" style="border: 1px 1px 1px 0px ; border-left:0px; margin-left:2em; border-radius: 4em;" placeholder="Your Message" aria-label="Search">
+                    <input id="chat" class="text-light form-control bg-transparent" autocomplete="off" type="search" style="border: 1px 1px 1px 0px ; border-left:0px; margin-left:2em; border-radius: 4em;" placeholder="Your Message" aria-label="Search" required>
                     <button class="btn btn-outline-light" style="border-radius: 4em;"  type="submit"><i class="fas fa-paper-plane"></i></button>
                     <a  id="microphonebut" href="#" class="btn btn-outline-light mx-2" type="button" style="border-radius: 4em; font-size: 1em;" > 
                       <i id="microphoneicon" class="fas fa-microphone"></i> 
@@ -132,16 +104,12 @@
     </div>
 
 
-<<<<<<< HEAD
- <script>
-=======
     <!--script src="{% static 'videoapp/js/chat.js' %} ">
     </script-->
  <script>
 
-let subscriptionKey = "6wb4SY1xPaK6f9hTQeXH7j1fQuInvtmszas159jZ06Bv07V2hegVJQQJ99AKACYeBjFXJ3w3AAAAACOGnUa0";
+let subscriptionKey = "GAhhrZCYQlVVFPpcyRRR2B2GypAFI9w1oxaYPlqTXOJIRaDt1chCJQQJ99AKACYeBjFXJ3w3AAAYACOGSatX";
  let serviceRegion = "eastus";
->>>>>>> 9e314d3 (change2s)
  function getCookie(name) {
             var value = "; " + document.cookie;
             var parts = value.split("; " + name + "=");
@@ -196,11 +164,7 @@ let subscriptionKey = "6wb4SY1xPaK6f9hTQeXH7j1fQuInvtmszas159jZ06Bv07V2hegVJQQJ9
                 chatArea.scrollTop = chatArea.scrollHeight;
 
                 try {
-<<<<<<< HEAD
-                    const response = await fetch("{% url 'chat_view' %}", {
-=======
                     const response = await fetch("{% url 'chat_ai' %}", {
->>>>>>> 9e314d3 (change2s)
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json',
@@ -273,37 +237,6 @@ let subscriptionKey = "6wb4SY1xPaK6f9hTQeXH7j1fQuInvtmszas159jZ06Bv07V2hegVJQQJ9
                 event.target.value = '';
             }
         });
-<<<<<<< HEAD
-        </script>
-   
-
-   <script>
-  async   function synthesizeSpeech(text) {
-const speechConfig1 = SpeechSDK.SpeechConfig.fromSubscription("2479e231dd5a4662af2c0a9b2396ab07", "eastus");
-const audioConfig1 = SpeechSDK.AudioConfig.fromDefaultSpeakerOutput();
-speechConfig1.speechSynthesisVoiceName = "en-US-DavisNeural"; 
-
-const speechSynthesizer = new SpeechSDK.SpeechSynthesizer(speechConfig1, audioConfig1);
-//text =  translateText(text);
-console.log(text)
-speechSynthesizer.speakTextAsync(
-    text,
-    result => {
-        if (result) {
-            speechSynthesizer.close();
-            return result.audioData;
-        }
-    },
-    error => {
-        console.log(error);
-        speechSynthesizer.close();
-    }
-);
-}
-
-
-
-=======
           
 
 async function synthesizeSpeech(text) {
@@ -337,7 +270,6 @@ async function synthesizeSpeech(text) {
 }
 
 
->>>>>>> 9e314d3 (change2s)
 document.addEventListener("DOMContentLoaded", () => {
    let microphonebut = document.getElementById("microphonebut");
    let microphoneicon = document.getElementById("microphoneicon");
@@ -345,12 +277,7 @@ document.addEventListener("DOMContentLoaded", () => {
    let recognizer;
 
    // Clé de subscription Azure et région (remplacez par vos propres informations)
-<<<<<<< HEAD
-   const subscriptionKey = "2479e231dd5a4662af2c0a9b2396ab07";
-   const serviceRegion = "eastus";
-=======
    
->>>>>>> 9e314d3 (change2s)
 
    microphonebut.addEventListener("click", () => {
        if (isMicrophoneActive) {
@@ -374,7 +301,7 @@ document.addEventListener("DOMContentLoaded", () => {
        } else {
            // Activer le microphone
            const speechConfig = SpeechSDK.SpeechConfig.fromSubscription(subscriptionKey, serviceRegion);
-           speechConfig.speechRecognitionLanguage = "fr-FR"; // ou autre langue selon votre besoin
+           speechConfig.speechRecognitionLanguage = "en-US"; // ou autre langue selon votre besoin
            const audioConfig = SpeechSDK.AudioConfig.fromDefaultMicrophoneInput();
 
            recognizer = new SpeechSDK.SpeechRecognizer(speechConfig, audioConfig);
@@ -390,50 +317,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
                    var rowDiv = document.createElement('div');
-<<<<<<< HEAD
-                rowDiv.className = 'row ';
-
-                var colDiv1 = document.createElement('div');
-                colDiv1.className = 'col-md-6';
-                colDiv1.style = "display: block";
-
-                var colDiv2 = document.createElement('div');
-                colDiv2.className = 'col-md-6 ';
-
-                var inputGroupDiv = document.createElement('div');
-                inputGroupDiv.className = 'input-group mb-3';
-
-                var formFloatingDiv = document.createElement('div');
-                formFloatingDiv.className = 'form-floating';
-                formFloatingDiv.style = 'border-radius: 4em; font-size: 1em; background: linear-gradient(rgba(0,0,0, 0.5), rgba(0,0,0, 0.5));';
-
-                var messageText = document.createElement('p');
-                messageText.className = 'card-text text-light';
-                messageText.textContent = transcript;
-
-                var buttonDiv = document.createElement('div');
-
-                var userIconButton = document.createElement('button');
-                userIconButton.className = 'btn btn-outline-light';
-                userIconButton.type = 'button';
-                userIconButton.style = 'border-radius: 4em; font-size: 1em; background: linear-gradient(rgba(0,0,0, 0.5), rgba(0,0,0, 0.5));';
-                userIconButton.innerHTML = '<i class="fas fa-user"></i>';
-
-                formFloatingDiv.appendChild(messageText);
-                buttonDiv.appendChild(userIconButton);
-                inputGroupDiv.appendChild(formFloatingDiv);
-                inputGroupDiv.appendChild(buttonDiv);
-                colDiv2.appendChild(inputGroupDiv);
-                rowDiv.appendChild(colDiv1);
-                rowDiv.appendChild(colDiv2);
-
-                var chatArea = document.getElementById("chatarea");
-                chatArea.appendChild(rowDiv);
-
-
-                   try{
-                   const response = await fetch("/chat_view/", {
-=======
                   rowDiv.className = 'row ';
 
                   var colDiv1 = document.createElement('div');
@@ -476,32 +359,21 @@ document.addEventListener("DOMContentLoaded", () => {
                   
                    try{
                    const response =  await fetch("{% url 'chat_ai' %}", {
->>>>>>> 9e314d3 (change2s)
                       method: 'POST',
                       headers: {
                         'Content-Type': 'application/json',
                         'X-CSRFToken': getCookie('csrftoken'),
                     },
-<<<<<<< HEAD
-                    body:  JSON.stringify({ user_input: e.result.text }) ,
-                        
-                      
-=======
                   
                     body:  JSON.stringify({ user_input: e.result.text }) ,
                         
                 
->>>>>>> 9e314d3 (change2s)
                     });
                     const data = await response.json();
                     if (data.success){
                         console.log(data.text)
             
                         let out = data.text;
-<<<<<<< HEAD
-                        const audio_url= synthesizeSpeech(out)
-                         
-=======
                         //const audio_url= synthesizeSpeech(out)
                         //
                         
@@ -512,7 +384,6 @@ document.addEventListener("DOMContentLoaded", () => {
                         console.log("lien2: ", audioBlob)
                         const audio_url = URL.createObjectURL(audioBlob);
                         console.log("lien3: ", audio_url)
->>>>>>> 9e314d3 (change2s)
 
                         var botRowDiv = document.createElement('div');
                     botRowDiv.className = 'row mb-3';
@@ -593,17 +464,10 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
 
-<<<<<<< HEAD
-  async function chatapp(text){
-    try {
-         
-         const response = await fetch("/chat_view/", {
-=======
 async function chatapp(text){
     try {
           
          const response =  await fetch("{% url 'chat_ai' %}", {
->>>>>>> 9e314d3 (change2s)
            method: 'POST',
            headers: {
              'Content-Type': 'application/json',
@@ -662,11 +526,7 @@ async function chatapp(text){
              console.log(rowDiva)
             
   
-<<<<<<< HEAD
-             document.getElementById("chatarea").appendChild(rowDiva);
-=======
              document.getElementById("chatarFea").appendChild(rowDiva);
->>>>>>> 9e314d3 (change2s)
              return  out
  
          }
@@ -677,20 +537,10 @@ async function chatapp(text){
      }
   }
  
-<<<<<<< HEAD
-   </script>
-
-  <style>
-  input::placeholder {
-    color: rgb(255, 253, 253); /* Changez cette valeur pour la couleur de votre choix */
-    opacity: 1; /* Assure que l'opacité est à 100% */
-  }</style>
-=======
    
   </script>
 
   
->>>>>>> 9e314d3 (change2s)
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
   </body>

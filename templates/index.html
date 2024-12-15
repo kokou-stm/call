@@ -32,16 +32,6 @@
                     <div class="card-header  text-light">
                         <div class="row redressed">
                             <div class="col">
-<<<<<<< HEAD
-                                <label for="languageSelect">Langue</label>
-                                <select id="languageSelect">
-                                    <!--option value="Origin">Origin</option-->
-                                    <option value="en-US">English</option>
-                                    <option value="fr-FR">French</option>
-                                    <option value="es-ES">Spanish</option>
-                                    <option value="zh-CN">Chinese</option>
-                                    <option value="hi-IN">Hindi</option>
-=======
                                 <label for="languageSelect">Input voice</label>
                                 <select id="languageSelect">
                                     <!--option value="Origin">Origin</option-->
@@ -51,22 +41,20 @@
                                     <!--option value="es-ES">Spanish</option>
                                     <option value="zh-CN">Chinese</option>
                                     <option value="hi-IN">Hindi</option-->
->>>>>>> 9e314d3 (change2s)
                                     <!-- Ajoutez d'autres options de langue selon vos besoins -->
                                 </select>
 
 
                             </div>
                             <div class="col">
-<<<<<<< HEAD
-                                Video Call
-=======
                                 <label for="scroll-button">Out voice</label>
                                 <select id="scroll-button">
                                     <!--option value="Origin">Origin</option-->
+                                    
                                     <option value="en-US">English</option>
                                     <option value="fr-FR">French</option>
-                                    <option value="original" >Original </option>
+                                    <option selected value="original" >Original </option>
+                                    
                                    
                                     
                                     <!-- Ajoutez d'autres options de langue selon vos besoins -->
@@ -77,7 +65,6 @@
                             <div class="col">
                                video call
 
->>>>>>> 9e314d3 (change2s)
                                 <button id="handpopup" class="btn btn-danger mr-2" type="button"
                                     style="visibility: hidden; border-radius: 4em; font-size: 1em;">
                                     <i class="fas fa-hand-point-up"></i> {{request.user.username}}
@@ -110,17 +97,23 @@
                                     <div id="output"></div>
                                 </div>
                                 <div class="col-md-2">
-<<<<<<< HEAD
-                                    <a id="chatbutton_1" href="{% url 'chat_ai' %}" class="btn btn-outline-light me-4"
-=======
                                     <a id="chatbutton_1" href="{% url 'chat_ai' %}" target="_blank" class="btn btn-outline-light me-4"
->>>>>>> 9e314d3 (change2s)
                                         type="button" style="border-radius: 4em; font-size: 1em;">
                                         <i id="chaticon_1" class="fas fa-comment"></i>
                                     </a>
                                 </div>
 
                             </div>
+
+                            <div class="row">
+                                <div class="col-md-10">
+                                    <label for="remote_transcript">Remote</label>
+                                    <div id="remote_transcript"></div>
+                                </div>
+                                
+
+                            </div>
+                            
                         </div>
                     </div>
                 </div>
@@ -228,11 +221,8 @@
         integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4"
         crossorigin="anonymous"></script>
 
-<<<<<<< HEAD
-    <script src="{% static 'videoapp/js/main.js' %} "></script>
-=======
         <script type="text/javascript">
-            var currentUsername = "{{ request.user.username }}";
+           const currentUsername = "{{ request.user.username }}";
         </script>
     <script src="{% static 'videoapp/js/main.js' %} "></script>
     
@@ -282,7 +272,6 @@ headphonesButton.addEventListener('click', () => {
 });
 
     </script>
->>>>>>> 9e314d3 (change2s)
 
 </body>
 

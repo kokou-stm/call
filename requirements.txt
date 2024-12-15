@@ -3,3 +3,7 @@ daphne
 Django==4.0.0
 django-environ
 python-dotenv
+gTTS==2.5.1
+openai==1.32.0
+pillow==10.3.0
+tqdm==4.66.4
