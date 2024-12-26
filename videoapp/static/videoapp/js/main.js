@@ -1,3 +1,47 @@
+let remoteUsers = {}                // Container for the remote streams
+let mainStreamUid = null            // Reference for video in the full screen view
+
+const cameraVideoPreset = '360p_7'          // 480 x 360p - 15fps @ 320 Kps
+const audioConfigPreset = 'music_standard'  // 48kHz mono @ 40 Kbps
+const screenShareVideoPreset = '1080_3'     // 1920 x 1080 - 30fps @ 3150 Kps
+
+const localTracks = {
+    camera: {
+      audio: null,
+      video: null
+    },
+    screen: {
+      audio: null,
+      video: null   
+    }
+  }
+
+  const localTrackActive = {
+    audio: false,
+    video: false,
+    screen: false
+  }
+
+  const Loglevel = {
+    DEBUG: 0,
+    INFO: 1,
+    WARNING: 2,
+    ERROR: 3,
+    NONE: 4
+  }
+  
+// helper function to quickly get dom elements
+function getById(divID) {
+    return document.getElementById(divID)
+  }
+// New remote users joins the channel
+const handleRemotUserJoined = async (user) => {
+    const uid = user.uid
+    remoteUsers[uid] = user         // add the user to the remote users
+    console.log(`User ${uid} joined the channel`)
+  }
+
+
 // Initialiser les variables globales
 let subscriptionKey = "GAhhrZCYQlVVFPpcyRRR2B2GypAFI9w1oxaYPlqTXOJIRaDt1chCJQQJ99AKACYeBjFXJ3w3AAAYACOGSatX";
 let serviceRegion = "eastus";
@@ -26,6 +70,12 @@ let microphoneicon = document.getElementById("microphoneicon");
 // Définir une variable globale pour voiceSocket et currentUsername
 //let voiceSocket = null; // Définissez votre socket ici
 //const currentUsername = "votreNomUtilisateur"; // Remplacez-le par la bonne valeur
+
+
+const mainIsEmpty = () => {
+    return getById('full-screen-video').childNodes.length === 0
+  }
+
 
 // Gestion des sélecteurs de langue
 document.getElementById('languageSelect').addEventListener('change', (event) => {
@@ -178,10 +228,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
 
-
-
-
-
 // WebSocket pour la reconnaissance vocale
 const voiceSocket = new WebSocket("wss://" + window.location.host + "/ws/voice/");
 console.log("Voice WebSocket: ", voiceSocket);
@@ -214,18 +260,42 @@ async function fetchToken() {
     }
 }
 
+// Remote user leaves the channel
+const handleRemotUserLeft = async (user, reason) => {
+    const uid = user.uid
+    delete remoteUsers[uid]
+    console.log(`User ${uid} left the channel with reason:${reason}`)
+  }
+
 // Initialisation de Agora RTC
 async function initializeAgora() {
     agoraEngine = AgoraRTC.createClient({ mode: "rtc", codec: "vp8" });
 
     agoraEngine.on('user-published', async (user, mediaType) => {
+        handleRemotUserJoined(user);
         await agoraEngine.subscribe(user, mediaType);
-
+       
         if (mediaType === 'video') {
             const remoteVideoTrack = user.videoTrack;
-            const remotePlayerContainer = createPlayerContainer(user.uid.toString());
-            videoGrid.appendChild(remotePlayerContainer);
-            remoteVideoTrack.play(remotePlayerContainer.querySelector('.video-container'));
+           /* if (remoteVideoTrack.mediaStreamTrack.label.toLowerCase().includes("screen")){
+                console.log("screen: ", remoteVideoTrack.mediaStreamTrack.label)
+            }else{
+                console.log("remote: ", remoteVideoTrack.mediaStreamTrack.label)
+            }
+            
+            console.log("width, height: ", remoteVideoTrack.mediaStreamTrack._videoHeight, remoteVideoTrack.mediaStreamTrack._videoWidth )
+            console.log("Mediatraque: ", remoteVideoTrack.mediaStreamTrack)
+            
+            const remotePlayerContainer = createPlayerContainer(user.uid.toString());*/
+           
+            //remotePlayerContainer.classList.add('screen-share-active');
+            /*videoGrid.appendChild(remotePlayerContainer);
+            remoteVideoTrack.play(remotePlayerContainer.querySelector('.video-container'));*/
+            const uid = user.uid; //.toString()
+            //await createRemoteUserDiv(uid) 
+            remoteVideoTrack.play('full-screen-video')
+             
+
         }
 
         if (mediaType === 'audio') {
@@ -238,6 +308,7 @@ async function initializeAgora() {
     agoraEngine.on('user-unpublished', (user) => {
         const remotePlayerContainer = document.getElementById(user.uid.toString());
         if (remotePlayerContainer) remotePlayerContainer.remove();
+        handleRemotUserLeft(user, "leave");
     });
 
     await agoraEngine.join(APP_ID, CHANNEL_NAME, token, null);
@@ -282,6 +353,28 @@ function createPlayerContainer(id) {
 
     return container;
 }
+
+// create the remote user container and video player div
+const createRemoteUserDiv = async (uid) => {
+    const containerDivId = getById(`remote-user-${uid}-container`)
+    if (containerDivId) return
+    console.log(`add remote user div for uid: ${uid}`)
+    // create a container for the remote video stream
+    const containerDiv = document.createElement('div')
+    containerDiv.id = `remote-user-${uid}-container`
+    // create a div to display the video track
+    const remoteUserDiv = document.createElement('div')
+    remoteUserDiv.id = `remote-user-${uid}-video`
+    remoteUserDiv.classList.add('remote-video')
+    containerDiv.appendChild(remoteUserDiv)
+    // Add remote user to remote video container
+    getById('remote-video-container').appendChild(containerDiv)
+  
+    // Listen for double click to swap container with main div
+    containerDiv.addEventListener('dblclick', async (e) => {
+      await swapMainVideo(uid)
+    })
+  }
 
 // Gestion du bouton de participation
 document.getElementById('join-leave-button').onclick = async () => {
@@ -354,9 +447,15 @@ document.addEventListener("DOMContentLoaded", () => {
             await screenClient.join(APP_ID, CHANNEL_NAME, tokenData.token, null);
 
             localScreenTrack = await AgoraRTC.createScreenVideoTrack();
+
+            
             screenContainer = createPlayerContainer('screen-share-container');
             screenContainer.classList.add('screen-share-active');
+            
             videoGrid.appendChild(screenContainer);
+             
+            // move the main user from the full-screen div
+            
 
             localScreenTrack.play(screenContainer.querySelector('.video-container'));
             await screenClient.publish(localScreenTrack);

@@ -1,6 +1,6 @@
 channels
 daphne
-Django==4.0.0
+Django==4.2.7
 django-environ
 python-dotenv
 gTTS==2.5.1

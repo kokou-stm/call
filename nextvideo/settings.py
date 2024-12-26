@@ -59,6 +59,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+     'videoapp.middleware.AutoLogoutMiddleware',
  #   'corsheaders.middleware.CorsMiddleware',
 ]
 
@@ -170,3 +171,13 @@ EMAIL_USE_SSL = False  # Assurez-vous que c'est désactivé si TLS est activé
 
 LOGIN_URL = 'login'
 LOGOUT_REDIRECT_URL = 'login'
+
+
+# Durée de vie maximale d'une session (30 jours)
+SESSION_COOKIE_AGE = 60 * 60 * 24 * 30  # En secondes
+
+# La session expire si le navigateur est fermé
+SESSION_EXPIRE_AT_BROWSER_CLOSE = False
+
+# Optionnel : Activez la persistance de la session
+SESSION_SAVE_EVERY_REQUEST = True

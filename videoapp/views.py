@@ -121,29 +121,32 @@ def register(request):
                     user.password = pass1
                     user.set_password(user.password)
                     user.save()
-                    subject= "Welcome to Youtube Video Translator! "
+                   
+
+                    subject = "Bienvenue sur videoCall !"
+
                     email_message = f"""
-                    Dear {username},
+                    Cher(e) {username},
 
-                    We are thrilled to welcome you to Youtube Video Translator! 🎉
+                    Nous sommes ravis de t’accueillir sur videoCall ! 🎉
 
-                    Your account has been successfully created, and you are now ready to explore all the amazing features of our service. With Youtube Video Translator,
-                    you can translate YouTube videos using a new artificial voice, making the audio translation experience more immersive than ever.
+                    Ton compte a été créé avec succès, et tu es maintenant prêt(e) à explorer l'univers passionnant des appels vidéo multilingues. Grâce à notre plateforme, tu peux te connecter avec des personnes du monde entier et profiter de la traduction vocale en temps réel lors de tes appels vidéo.
 
-                    Here are some of the features you can start exploring right away:
+                    Voici quelques fonctionnalités incroyables que tu peux découvrir dès maintenant :
 
-                    Translate your favorite YouTube videos into the language of your choice.
-                    Customize the artificial voice to match your preferences.
-                    Download your translations for offline listening.
-                    We look forward to helping you make the most out of our platform and providing you with an exceptional audio translation experience.
+                    - Communique avec des utilisateurs parlant différentes langues, avec ta voix instantanément traduite dans la langue de ton interlocuteur.
+                    - Brise les barrières linguistiques et échange facilement avec des personnes parlant français, anglais, espagnol, et bien d’autres !
+                    - Profite d’une traduction fluide et en temps réel grâce à notre technologie IA avancée.
+                    - Explore une large sélection de langues pour une expérience de communication véritablement mondiale.
 
-                    If you have any questions or concerns, feel free to contact us at [your email address] or through our support page.
+                    Nous sommes impatients de t’aider à connecter avec le monde entier de manière inédite. Si tu as des questions ou besoin d’assistance, n’hésite pas à nous contacter à [ton adresse e-mail] ou à visiter notre page de support.
 
-                    Once again, welcome to Youtube Video Translator! We are delighted to have you with us.
+                    Encore une fois, bienvenue sur videoCall ! Nous sommes ravis de t’avoir parmi nous.
 
-                    Best regards,
+                    Cordialement,  
+                    L’équipe videoCall
+                    """
 
-                    The Youtube Video Translator Team"""
                     email = EmailMessage(subject,
                              email_message,
                              f"Youtube VideoTrans <{settings.EMAIL_HOST}>",
@@ -158,10 +161,13 @@ def register(request):
                     verification_code.generate_code()
                     print(verification_code.code)
                     
-                    code = EmailMessage('Votre code de vérification',
-                             f'Votre code de vérification est : {verification_code.code}',
-                             f"Youtube VideoTrans <{settings.EMAIL_HOST}>",
-                             [user.email])
+                    code = EmailMessage(
+                        'Votre code de vérification ',
+                        f'Bonjour,\n\nVotre code de vérification pour activer votre compte sur videoCall est : {verification_code.code}\n\nMerci de l\'utiliser pour valider votre inscription.',
+                        f"videoCall <{settings.EMAIL_HOST}>",
+                        [user.email]
+                    )
+
 
                     code.send()
                     return redirect("code")
@@ -177,7 +183,7 @@ def register(request):
 
 
 
-def connection(request):
+def connection1(request):
     mess = ""
 
     '''if request.user.is_authenticated:
@@ -212,6 +218,53 @@ def connection(request):
     return render(request, template_name="login.html")
 
 
+from django.contrib.auth import login, authenticate
+from django.contrib.auth.models import User
+from django.core.validators import validate_email
+from django.contrib import messages
+from django.conf import settings
+from django.shortcuts import render, redirect
+
+def connection(request):
+    mess = ""
+
+    if request.method == "POST":
+        print("="*5, "NEW CONNECTION", "="*5)
+        email = request.POST.get("email")
+        password = request.POST.get("password")
+        remember_me = request.POST.get("remember_me")  # Récupération de l'option "Se souvenir de moi"
+        
+        try:
+            validate_email(email)
+        except:
+            mess = "Invalid Email !!!"
+
+        if mess == "":
+            user = User.objects.filter(email=email).first()
+            if user:
+                auth_user = authenticate(username=user.username, password=password)
+                if auth_user:
+                    print("Utilisateur infos: ", auth_user.username, auth_user.email)
+                    
+                    # Authentification et gestion de session
+                    login(request, auth_user)
+                    
+                    # Gérer la durée de la session
+                    if remember_me:  # Si "Se souvenir de moi" est coché
+                        request.session.set_expiry(settings.SESSION_COOKIE_AGE)  # 30 jours
+                    else:
+                        request.session.set_expiry(0)  # Expire à la fermeture du navigateur
+                    
+                    return redirect("index")
+                else:
+                    mess = "Incorrect password"
+            else:
+                mess = "User does not exist"
+            
+        messages.info(request, mess)
+
+    return render(request, template_name="login.html")
+
 
 def code(request):
     mess = ""
@@ -243,8 +296,6 @@ def deconnexion(request):
          logout(request)
          return redirect("index")
     
-
-
 
 
 '''from openai import AzureOpenAI

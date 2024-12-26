@@ -62,36 +62,39 @@
                 </ul>
                </div>
 
-            <div class="card-body">
-             
-                  <h5 class="card-title"></h5>
-    
-                  <form action="{% url 'login' %}" method="post">
-                    {% csrf_token %}
-                    <div class="input-group  mt-5 ">
-                      <div class="input-group-prepend">
-            
-                        <span class="input-group-text" id="basic-addon1"><i class="fas fa-at pb-2"></i></span>
-                      </div>
-                      <input type="email" class="form-control merriweather" placeholder="Email" aria-label="Email" aria-describedby="basic-addon1" name="email"  required >
+               <div class="card-body">
+                <h5 class="card-title"></h5>
+                <form action="{% url 'login' %}" method="post">
+                  {% csrf_token %}
+                  <div class="input-group mt-5">
+                    <div class="input-group-prepend">
+                      <span class="input-group-text" id="basic-addon1"><i class="fas fa-at pb-2"></i></span>
                     </div>
-        
-                    <div class="input-group mb-3 mt-3">
-                      <div class="input-group-prepend">
-                        <span class="input-group-text" id="basic-addon1"><i class="fas fa-key pb-2"></i></span>
-                      </div>
-                      <input type="password" id="passwordInput" class="form-control merriweather"  placeholder="Password" aria-label="Username" aria-describedby="basic-addon1" name="password" required>
-                      <button class="btn btn-outline-secondary" type="button" id="togglePasswordBtn">
-                        <i class="fas fa-eye"></i>
-                      </button>
-                    </div>
-                    <button type="submit" class="btn btn-primary px-5 mt-5" style="border-radius: 4em;">Submit</button>
-                  </form>
-
-                 
-                
+                    <input type="email" class="form-control merriweather" placeholder="Email" aria-label="Email" aria-describedby="basic-addon1" name="email" required>
+                  </div>
               
-            </div>
+                  <div class="input-group mb-3 mt-3">
+                    <div class="input-group-prepend">
+                      <span class="input-group-text" id="basic-addon1"><i class="fas fa-key pb-2"></i></span>
+                    </div>
+                    <input type="password" id="passwordInput" class="form-control merriweather" placeholder="Password" aria-label="Password" aria-describedby="basic-addon1" name="password" required>
+                    <button class="btn btn-outline-secondary" type="button" id="togglePasswordBtn">
+                      <i class="fas fa-eye"></i>
+                    </button>
+                  </div>
+              
+                  <!-- "Se souvenir de moi" -->
+                  <div class="form-check text-start mb-3">
+                    <input type="checkbox" class="form-check-input" id="rememberMe" name="remember_me">
+                    <label class="form-check-label" for="rememberMe">
+                      Se souvenir de moi
+                    </label>
+                  </div>
+              
+                  <button type="submit" class="btn btn-primary px-5 mt-3" style="border-radius: 4em;">Submit</button>
+                </form>
+              </div>
+              
             <div class="card-footer text-muted  mt-2" style=" font-weight: 300;">
               <div class="row">
                 <div class="col">
@@ -99,7 +102,7 @@
                 </div>
                
                 <div class="col">
-                  <a href="{% url 'forgotpassword' %}"> Forgot password </a>
+                  <a href="{% url 'password_reset' %}"> Forgot password </a>
                 </div>
               </div>
               
